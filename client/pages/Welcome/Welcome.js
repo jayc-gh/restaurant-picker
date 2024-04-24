@@ -4,7 +4,7 @@ import Cuisines from './components/Cuisines';
 import Radius from './components/Radius';
 
 const Welcome = () => {
-  // using built-in geolocation api to get current location
+  // built-in geolocation api to get current location
   let latitude;
   let longitude;
   if ('geolocation' in navigator) {
@@ -40,6 +40,29 @@ const Welcome = () => {
     setCuisineList(newCuisineList);
   };
 
+  // sending search parameters to backend
+  const sendParams = () => {
+    const term = 'restaurants';
+    const cuisines = cuisineList.join(',').toLowerCase();
+    const params = {
+      term,
+      cuisines,
+      latitude,
+      longitude,
+      radius,
+      photos: true,
+    };
+
+    // post request to send params to backend
+    fetch('/welcome', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    }).catch(err => console.log(err));
+  };
+
   return (
     <div className="text-center mt-56">
       <h1 className="m-20 text-5xl">Let's get started!</h1>
@@ -60,7 +83,10 @@ const Welcome = () => {
       </div>
       <Radius handleRadiusChange={handleRadiusChange} radius={radius} />
       <button
-        onClick={handleNext}
+        onClick={() => {
+          sendParams();
+          handleNext();
+        }}
         className="py-3 px-5 bg-violet-500 rounded-lg"
       >
         Find Restaurants!
