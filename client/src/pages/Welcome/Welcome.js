@@ -4,6 +4,23 @@ import Cuisines from './components/Cuisines';
 import Radius from './components/Radius';
 
 const Welcome = () => {
+  // using built-in geolocation api to get current location
+  let latitude;
+  let longitude;
+  if ('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition(position => {
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude;
+      console.log('Latitude: ', latitude, 'Longitude: ', longitude);
+    });
+  }
+
+  // radius state which gets updated in Radius.js input slider
+  const [radius, setRadius] = useState(10);
+  const handleRadiusChange = e => {
+    setRadius(e.target.value);
+  };
+
   // managing list of cuisines state
   const [cuisineList, setCuisineList] = useState([]);
   const addCuisine = newCuisine => {
@@ -16,6 +33,7 @@ const Welcome = () => {
     navigate('/restaurants');
   };
 
+  // handling deleting cuisine on click
   const deleteCuisine = i => {
     const newCuisineList = [...cuisineList];
     newCuisineList.splice(i, 1);
@@ -40,7 +58,7 @@ const Welcome = () => {
           ))}
         </div>
       </div>
-      <Radius />
+      <Radius handleRadiusChange={handleRadiusChange} radius={radius} />
       <button
         onClick={handleNext}
         className="py-3 px-5 bg-violet-500 rounded-lg"

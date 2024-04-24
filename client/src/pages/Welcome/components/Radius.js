@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import '../../../index.css';
 
-const Radius = () => {
-  const [value, setValue] = useState(10);
-
-  const handleRadiusChange = e => {
-    setValue(e.target.value);
-  };
+const Radius = ({ handleRadiusChange, radius }) => {
   return (
     <div className="center-items mb-5">
       <h2 className="text-xl">Search Radius</h2>
@@ -14,11 +9,11 @@ const Radius = () => {
         type="range"
         min="0"
         max="50"
-        value={value}
+        value={radius}
         onChange={handleRadiusChange}
         className="w-1/3"
       ></input>
-      <p>{value}mi</p>
+      <p>{radius}mi</p>
     </div>
   );
 };
