@@ -33,7 +33,7 @@ const Cuisines = ({ addCuisine }) => {
         ></input>
         <button
           onClick={handleAddCuisine}
-          className="absolute right-8 bg-violet-700 text-white px-2 border rounded-full bg-pastelbeige"
+          className="absolute right-8 bg-violet-700 text-white px-2 border rounded-full bg-pastelbeige hover:bg-darkerpastelbeige"
         >
           +
         </button>

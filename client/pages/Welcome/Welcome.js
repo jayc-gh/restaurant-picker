@@ -60,7 +60,7 @@ const Welcome = ({ handleSetParams }) => {
   };
 
   return (
-    <div className="text-center mt-56">
+    <div className="text-center mt-48">
       <h1 className="m-20 text-5xl">Let's get started!</h1>
       <Cuisines addCuisine={addCuisine} />
       <div className="mb-5">
@@ -82,10 +82,11 @@ const Welcome = ({ handleSetParams }) => {
         onClick={() => {
           setParams();
         }}
-        className="py-3 px-5 bg-violet-500 border rounded-xl bg-middlepink hover:bg-darkpink"
+        className="py-3 px-5 bg-violet-500 border rounded-xl mb-4 bg-middlepink hover:bg-darkpink"
       >
         Find Restaurants!
       </button>
+      <div></div>
     </div>
   );
 };

@@ -79,8 +79,6 @@ const Restaurants = ({ params }) => {
       .catch(err => console.log(err));
   }, [params]);
 
-  const handleInteraction = () => {};
-
   const unlikeRestaurant = () => {
     const newRestaurants = [...restaurants];
     newRestaurants.splice(index, 1);
@@ -129,7 +127,7 @@ const Restaurants = ({ params }) => {
 
   return (
     <div className="flex flex-col items-center mt-16">
-      <div className="flex justify-center w-1/2 text-lg mt-4 mb-2">
+      <div className="flex justify-center w-1/2 text-lg mt-4 mb-4">
         <button
           onClick={restart}
           className="border w-26 rounded-lg py-2 px-2 mr-12 bg-pastelbeige hover:bg-darkerpastelbeige"
@@ -148,16 +146,16 @@ const Restaurants = ({ params }) => {
       restaurants.length !== 1 ? (
         <Card restaurant={restaurants[index]} />
       ) : (
-        // only show restaurants[0] and instead of incrementing index just remove the first index from restaurants state
-        // so then have && restaurants.length > 1, else if === 1 you found a match, else nothing to show
         <div>
-          {restaurants.length === 1 ? (
+          {loading ? (
+            <p className="text-center my-10 text-5xl">Loading...</p>
+          ) : restaurants.length === 1 ? (
             <div>
               <p className="text-5xl text-center pb-4">You found a match!</p>
               <Card restaurant={restaurants[0]} />
             </div>
           ) : (
-            <div className="text-center my-10">
+            <div className="text-center my-10 text-xl">
               You've reached the end. <br /> Narrow down to continue with your
               currently liked restaurants!
             </div>
@@ -176,7 +174,6 @@ const Restaurants = ({ params }) => {
         <button
           className="border w-16 py-1 rounded-lg bg-middlepink hover:bg-darkpink"
           onClick={() => {
-            handleInteraction();
             likeRestaurant();
           }}
         >
