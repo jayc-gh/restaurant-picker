@@ -3,29 +3,38 @@ const path = require('path');
 const mongoose = require('mongoose');
 const restaurantController = require('./controllers/restaurantController');
 const app = express();
-const PORT = 8080;
+const PORT = 3000;
+const cors = require('cors');
+require('dotenv').config();
+
+const URI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${encodeURIComponent(
+  process.env.MONGODB_PASSWORD
+)}@${process.env.MONGODB_CLUSTER_URL}restaurants`;
+
+mongoose.connect(URI);
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('connected', () => {
+  console.log('Connected to MongoDB');
+});
 
 app.use(express.json());
+app.use(cors());
 
-// route for get request getting list of restaurants
+// post request to api
+app.post('/api', restaurantController.api, (req, res) => {
+  res.status(200).json(res.locals.apiRestaurants);
+});
+
+// // route for post request storing liked restaurants
+app.post('/restaurants', restaurantController.save);
+
+// // route for get request getting list of restaurants
 app.get('/restaurants', restaurantController.get, (req, res) => {
   res.status(200).json(res.locals.restaurants);
 });
 
-// route for post request storing liked restaurants
-app.post('/restaurants', restaurantController.save, (req, res) => {
-  res.status(200).send('Restaurant liked!');
-});
-
-// route for delete request unliking restaurants
-app.delete('/restaurants', restaurantController.deleteLiked, (req, res) => {
-  res.status(200).send('Restaurant unliked');
-});
-
-// route for put request deleting liked collection
-app.put('/restaurants', restaurantController.restart, (req, res) => {
-  res.status(200).send('Reset complete');
-});
+app.get('/restart', restaurantController.restart);
 
 // catch all error
 app.use('*', (req, res) => {

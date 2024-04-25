@@ -8,7 +8,7 @@ const Radius = ({ handleRadiusChange, radius }) => {
       <input
         type="range"
         min="0"
-        max="50"
+        max="24"
         value={radius}
         onChange={handleRadiusChange}
         className="w-1/3"

@@ -1,6 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const restaurantSchema = new Schema({});
+const likedRestaurantsSchema = new Schema({
+  name: String,
+  rating: String,
+  location: Object,
+  image_url: String,
+});
 
-module.exports = mongoose.model('Restaurant', restaurantSchema);
+const selectedRestaurantsSchema = new Schema({
+  name: String,
+  rating: String,
+  location: Object,
+  image_url: String,
+});
+
+module.exports = {
+  likedRestaurants: mongoose.model('likedRestaurants', likedRestaurantsSchema),
+  selectedRestaurants: mongoose.model(
+    'selectedRestaurants',
+    selectedRestaurantsSchema
+  ),
+};

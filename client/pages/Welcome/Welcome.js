@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cuisines from './components/Cuisines';
 import Radius from './components/Radius';
 
-const Welcome = () => {
-  // built-in geolocation api to get current location
-  let latitude;
-  let longitude;
-  if ('geolocation' in navigator) {
-    navigator.geolocation.getCurrentPosition(position => {
-      latitude = position.coords.latitude;
-      longitude = position.coords.longitude;
-      console.log('Latitude: ', latitude, 'Longitude: ', longitude);
-    });
-  }
+const Welcome = ({ handleSetParams }) => {
+  // handle redirecting to a different page
+  // useEffect to make sure we only redirect after params are set
+  const [paramsSet, setParamsSet] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (paramsSet) {
+      navigate('/restaurants');
+    }
+  }, [paramsSet]);
 
   // radius state which gets updated in Radius.js input slider
-  const [radius, setRadius] = useState(10);
+  const [radius, setRadius] = useState(12);
   const handleRadiusChange = e => {
     setRadius(e.target.value);
   };
@@ -27,12 +26,6 @@ const Welcome = () => {
     setCuisineList([...cuisineList, newCuisine]);
   };
 
-  // handle redirecting to a different page
-  const navigate = useNavigate();
-  const handleNext = () => {
-    navigate('/restaurants');
-  };
-
   // handling deleting cuisine on click
   const deleteCuisine = i => {
     const newCuisineList = [...cuisineList];
@@ -40,27 +33,30 @@ const Welcome = () => {
     setCuisineList(newCuisineList);
   };
 
-  // sending search parameters to backend
-  const sendParams = () => {
-    const term = 'restaurants';
-    const cuisines = cuisineList.join(',').toLowerCase();
-    const params = {
-      term,
-      cuisines,
-      latitude,
-      longitude,
-      radius,
-      photos: true,
-    };
-
-    // post request to send params to backend
-    fetch('/welcome', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(params),
-    }).catch(err => console.log(err));
+  // defining parameters which will ultimately be used to
+  // send api request in restaurants.js
+  const setParams = () => {
+    // built-in geolocation api to get current location
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const term = 'restaurants';
+        const categories = cuisineList
+          .map(cuisine => `categories=${cuisine.toLowerCase()}`)
+          .join('&');
+        const params = {
+          term,
+          categories,
+          latitude,
+          longitude,
+          radius: Math.round(radius * 1609.344),
+          limit: 30,
+        };
+        handleSetParams(params);
+        setParamsSet(true);
+      });
+    }
   };
 
   return (
@@ -84,8 +80,7 @@ const Welcome = () => {
       <Radius handleRadiusChange={handleRadiusChange} radius={radius} />
       <button
         onClick={() => {
-          sendParams();
-          handleNext();
+          setParams();
         }}
         className="py-3 px-5 bg-violet-500 rounded-lg"
       >
