@@ -11,7 +11,7 @@ const Radius = ({ handleRadiusChange, radius }) => {
         max="24"
         value={radius}
         onChange={handleRadiusChange}
-        className="w-1/3"
+        className="w-1/3 accent-offwhite"
       ></input>
       <p>{radius}mi</p>
     </div>

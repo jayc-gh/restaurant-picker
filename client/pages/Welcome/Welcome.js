@@ -68,7 +68,7 @@ const Welcome = ({ handleSetParams }) => {
         <div className="flex flex-wrap justify-center w-3/4 mx-auto">
           {cuisineList.map((cuisine, i) => (
             <div
-              className="px-2 cursor-pointer"
+              className="border bg-pastelbeige px-2 cursor-pointer rounded-lg mx-1"
               key={cuisine}
               onClick={() => deleteCuisine(i)}
             >
@@ -82,7 +82,7 @@ const Welcome = ({ handleSetParams }) => {
         onClick={() => {
           setParams();
         }}
-        className="py-3 px-5 bg-violet-500 rounded-lg"
+        className="py-3 px-5 bg-violet-500 border rounded-xl bg-middlepink hover:bg-darkpink"
       >
         Find Restaurants!
       </button>

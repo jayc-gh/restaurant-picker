@@ -6,6 +6,8 @@ const likedRestaurantsSchema = new Schema({
   rating: String,
   location: Object,
   image_url: String,
+  distance: Number,
+  price: String,
 });
 
 const selectedRestaurantsSchema = new Schema({
@@ -13,6 +15,8 @@ const selectedRestaurantsSchema = new Schema({
   rating: String,
   location: Object,
   image_url: String,
+  distance: Number,
+  price: String,
 });
 
 module.exports = {

@@ -46,7 +46,7 @@ restaurantController.api = (req, res, next) => {
 restaurantController.save = async (req, res, next) => {
   try {
     // only try to add if it doesn't already exist
-    const { name, rating, location, image_url } = req.body;
+    const { name, rating, location, image_url, price, distance } = req.body;
     const liked = await likedRestaurants.findOne({ name });
     if (!liked) {
       await likedRestaurants.create({
@@ -54,6 +54,8 @@ restaurantController.save = async (req, res, next) => {
         rating,
         location,
         image_url,
+        price,
+        distance,
       });
       console.log('liked');
       res.status(201).json({ message: 'Liked!' });

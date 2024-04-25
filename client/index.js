@@ -11,7 +11,7 @@ const App = () => {
   };
 
   return (
-    <div className="max-w-screen-sm mx-auto font-mono">
+    <div className="max-w-screen-sm mx-auto font-nunito">
       <Router>
         <Routes>
           <Route

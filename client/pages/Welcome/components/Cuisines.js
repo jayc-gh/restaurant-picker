@@ -21,7 +21,7 @@ const Cuisines = ({ addCuisine }) => {
   };
   return (
     <div className="center-items">
-      <h2 className="text-xl">What are you feeling?</h2>
+      <h2 className="text-xl mb-2">What are you feeling?</h2>
       <div className="relative flex items-center justify-center mb-2">
         <input
           type="text"
@@ -29,11 +29,11 @@ const Cuisines = ({ addCuisine }) => {
           value={newCuisine}
           onChange={handleNewCuisine}
           onKeyDown={handleKeyPress}
-          className="w-3/4 h-8 pr-8 pl-2 outline-none"
+          className="w-3/4 h-8 pr-8 pl-4 outline-none rounded-full"
         ></input>
         <button
           onClick={handleAddCuisine}
-          className="absolute right-8 bg-violet-700 text-white px-2 rounded-full"
+          className="absolute right-8 bg-violet-700 text-white px-2 border rounded-full bg-pastelbeige"
         >
           +
         </button>
