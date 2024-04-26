@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cuisines from './components/Cuisines';
 import Radius from './components/Radius';
+import LikedCard from './components/LikedCard';
 
 const Welcome = ({ handleSetParams }) => {
+  const [saved, setSaved] = useState([]);
   // handle redirecting to a different page
   // useEffect to make sure we only redirect after params are set
   const [paramsSet, setParamsSet] = useState(false);
@@ -14,6 +16,21 @@ const Welcome = ({ handleSetParams }) => {
     }
   }, [paramsSet]);
 
+  useEffect(() => {
+    fetch('http://localhost:3000/getSaved', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('got fetch data');
+        console.log(data);
+        setSaved(data);
+      })
+      .catch(err => console.log(err));
+  }, []);
   // radius state which gets updated in Radius.js input slider
   const [radius, setRadius] = useState(12);
   const handleRadiusChange = e => {
@@ -60,8 +77,8 @@ const Welcome = ({ handleSetParams }) => {
   };
 
   return (
-    <div className="text-center mt-48">
-      <h1 className="m-20 text-5xl">Let's get started!</h1>
+    <div className="text-center mt-36">
+      <h1 className="mb-10 text-5xl">Let's get started!</h1>
       <Cuisines addCuisine={addCuisine} />
       <div className="mb-5">
         <h2>Selected Cuisines:</h2>
@@ -86,7 +103,13 @@ const Welcome = ({ handleSetParams }) => {
       >
         Find Restaurants!
       </button>
-      <div></div>
+      <h2 className="mb-4">Previously Liked Restaurants:</h2>
+      <div className="flex">
+        {saved.length > 0 &&
+          saved.map((restaurant, index) => (
+            <LikedCard key={index} restaurant={restaurant} />
+          ))}
+      </div>
     </div>
   );
 };

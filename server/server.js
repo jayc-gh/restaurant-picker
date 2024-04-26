@@ -27,7 +27,7 @@ app.post('/api', restaurantController.api, (req, res) => {
 });
 
 // // route for post request storing liked restaurants
-app.post('/restaurants', restaurantController.save);
+app.post('/restaurants', restaurantController.like);
 
 // // route for get request getting list of restaurants
 app.get('/restaurants', restaurantController.get, (req, res) => {
@@ -35,6 +35,12 @@ app.get('/restaurants', restaurantController.get, (req, res) => {
 });
 
 app.get('/restart', restaurantController.restart);
+
+app.post('/save', restaurantController.save);
+
+app.get('/getSaved', restaurantController.getSaved, (req, res) => {
+  res.status(200).json(res.locals.saved);
+});
 
 // catch all error
 app.use('*', (req, res) => {

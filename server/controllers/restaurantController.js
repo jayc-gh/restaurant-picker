@@ -43,7 +43,7 @@ restaurantController.api = (req, res, next) => {
 };
 
 // handle post request when restaurant is liked
-restaurantController.save = async (req, res, next) => {
+restaurantController.like = async (req, res, next) => {
   try {
     // only try to add if it doesn't already exist
     const { name, rating, location, image_url, price, distance } = req.body;
@@ -98,6 +98,43 @@ restaurantController.restart = (req, res, next) => {
       console.error('Error clearing database:', err);
       res.status(500).json({ error: err });
     });
+};
+
+restaurantController.save = async (req, res) => {
+  try {
+    // only try to add if it doesn't already exist
+    const { name, rating, location, image_url } = req.body;
+    console.log(req.body);
+    const liked = await selectedRestaurants.findOne({ name });
+    if (!liked) {
+      await selectedRestaurants.create({
+        name,
+        rating,
+        location,
+        image_url,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+restaurantController.getSaved = async (req, res, next) => {
+  try {
+    const all = await selectedRestaurants.find({});
+    if (all) {
+      res.locals.saved = all;
+      next();
+    } else {
+      res.status(409).json({ message: 'No liked restaurants' });
+    }
+  } catch (err) {
+    console.log(err);
+    next({
+      error: err,
+    });
+  }
 };
 
 module.exports = restaurantController;

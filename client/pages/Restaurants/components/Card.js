@@ -8,7 +8,7 @@ const Card = ({ restaurant }) => {
         className="h-96 object-cover rounded-t-2xl"
       />
       <div className="ml-4 my-4">
-        <p className="text-2xl font-bold">{restaurant.name}</p>
+        <p className="text-2xl font-bold mb-2">{restaurant.name}</p>
         <p>Rating: {restaurant.rating}/5</p>
         <p>Address: {restaurant.location.address1}</p>
         <p>Price: {restaurant.price}</p>

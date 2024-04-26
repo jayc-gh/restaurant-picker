@@ -79,6 +79,10 @@ const Restaurants = ({ params }) => {
       .catch(err => console.log(err));
   }, [params]);
 
+  useEffect(() => {
+    if (restaurants.length === 1) saveLiked();
+  }, [restaurants]);
+
   const unlikeRestaurant = () => {
     const newRestaurants = [...restaurants];
     newRestaurants.splice(index, 1);
@@ -123,6 +127,16 @@ const Restaurants = ({ params }) => {
       },
     }).catch(err => console.log(err));
     navigate('/');
+  };
+
+  const saveLiked = () => {
+    fetch('http://localhost:3000/save', {
+      method: 'POST',
+      body: JSON.stringify(restaurants[0]),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).catch(err => console.log(err));
   };
 
   return (
